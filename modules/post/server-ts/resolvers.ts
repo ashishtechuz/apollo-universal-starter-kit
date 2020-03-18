@@ -2,6 +2,9 @@ import { PubSub, withFilter } from 'graphql-subscriptions';
 import { createBatchResolver } from 'graphql-resolve-batch';
 // interfaces
 import { Post, Comment, Identifier } from './sql';
+import settings from '@gqlapp/config';
+
+import fileSystemStorage, { UploadFileStream } from './FileSystemStorage';
 
 interface Edges {
   cursor: number;
@@ -68,8 +71,13 @@ export default (pubsub: PubSub) => ({
     })
   },
   Mutation: {
-    async addPost(obj: any, { input }: PostInput, context: any) {
-      const [id] = await context.Post.addPost(input);
+    async addPost(obj: any, { input, file }: PostInput, context: any) {
+      const uploadedFile = await fileSystemStorage.save(await file, settings.upload.uploadDir);
+
+      const [id] = await context.Post.addPost({
+        ...input,
+        image: uploadedFile.path
+      });
       const post = await context.Post.post(id);
       // publish for post list
       pubsub.publish(POSTS_SUBSCRIPTION, {
@@ -106,8 +114,13 @@ export default (pubsub: PubSub) => ({
         return { id: null };
       }
     },
-    async editPost(obj: any, { input }: PostInputWithId, context: any) {
-      await context.Post.editPost(input);
+    async editPost(obj: any, { input, file }: PostInputWithId, context: any) {
+      const request = JSON.parse(JSON.stringify(input));
+      if (file) {
+        const image = await fileSystemStorage.save(await file, settings.upload.uploadDir);
+        request.image = image.path;
+      }
+      await context.Post.editPost(request);
       const post = await context.Post.post(input.id);
       // publish for post list
       pubsub.publish(POSTS_SUBSCRIPTION, {

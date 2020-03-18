@@ -20,6 +20,12 @@ NoPostsMessage.propTypes = { t: PropTypes.func };
 const PostList = ({ loading, posts, t, loadData, deletePost }) => {
   const columns = [
     {
+      title: t('list.column.image'),
+      dataIndex: 'image',
+      key: 'image',
+      render: (text, record) => <img width={20} src={text} />
+    },
+    {
       title: t('list.column.title'),
       dataIndex: 'title',
       key: 'title',
@@ -64,7 +70,12 @@ const PostList = ({ loading, posts, t, loadData, deletePost }) => {
       {/* Render metadata */}
       <Helmet
         title={`${settings.app.name} - ${t('list.title')}`}
-        meta={[{ name: 'description', content: `${settings.app.name} - ${t('list.meta')}` }]}
+        meta={[
+          {
+            name: 'description',
+            content: `${settings.app.name} - ${t('list.meta')}`
+          }
+        ]}
       />
       <h2>{t('list.subTitle')}</h2>
       <Link to="/post/new">

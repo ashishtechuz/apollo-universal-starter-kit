@@ -1,8 +1,10 @@
 # Post
+
 type Post {
   id: Int!
   title: String!
   content: String!
+  image: String
   comments: [Comment]
 }
 
@@ -40,11 +42,11 @@ extend type Query {
 
 extend type Mutation {
   # Create new post
-  addPost(input: AddPostInput!): Post
+  addPost(input: AddPostInput!, file: FileUpload!): Post
   # Delete a post
   deletePost(id: Int!): Post
   # Edit a post
-  editPost(input: EditPostInput!): Post
+  editPost(input: EditPostInput!, file: FileUpload): Post
   # Add comment to post
   addComment(input: AddCommentInput!): Comment
   # Delete a comment

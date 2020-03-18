@@ -28,7 +28,7 @@ const PostCommentsView = ({
       key: 'actions',
       width: 120,
       render: (text, record) => (
-        <div style={{ width: 120 }}>
+        <div style={{ width: 120, float: 'right', display: 'flex' }}>
           <Button
             color="primary"
             size="sm"
@@ -36,7 +36,7 @@ const PostCommentsView = ({
             onClick={() => onCommentSelect({ id: record.id, content: record.content })}
           >
             {t('comment.btn.edit')}
-          </Button>{' '}
+          </Button>
           <Button color="primary" size="sm" className="delete-comment" onClick={() => handleDeleteComment(record.id)}>
             {t('comment.btn.del')}
           </Button>

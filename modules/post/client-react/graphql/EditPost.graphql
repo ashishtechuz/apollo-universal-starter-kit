@@ -1,7 +1,7 @@
 #import "./Post.graphql"
 
-mutation editPost($input: EditPostInput!) {
-  editPost(input: $input) {
+mutation editPost($input: EditPostInput!, $file: FileUpload) {
+  editPost(input: $input, file: $file) {
     ...PostInfo
   }
 }

@@ -37,6 +37,7 @@
   width: 30%;
   margin-bottom: 20px;
 }
+
 .ui-dropzone {
   position: relative;
   border: 1px dashed grey;
@@ -45,6 +46,9 @@
 }
 .ui-dropzone.has-error {
   border-color: #f44336;
+}
+.edit-comment {
+  margin-right: 1px !important;
 }
 
 @media print {
